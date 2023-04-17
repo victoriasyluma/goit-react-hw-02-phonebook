@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 export class ContactList extends Component {
   render() {
-    const { contacts } = this.props;
+    const { contacts, deleteContact } = this.props;
 
     return (
       <div>
@@ -12,6 +12,7 @@ export class ContactList extends Component {
           {contacts.map((contact) => (
             <li key={contact.id}>
               {contact.name} {contact.number}
+              <button onClick={deleteContact(contact)}>Delete</button>
             </li>
           ))}
         </ul>

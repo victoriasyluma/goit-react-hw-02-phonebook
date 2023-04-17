@@ -17,6 +17,23 @@ export class App extends Component {
   addContact = (contact) => {
     const { contacts } = this.state;
 
+    if (!contact.name) {
+      return;
+    }
+
+    const doesContactExists = contacts.some(({ name }) => {
+      const nameSanitized = name.toLocaleLowerCase().trim();
+      const newContactNameSanitized = contact.name.toLocaleLowerCase().trim();
+
+      return nameSanitized === newContactNameSanitized;
+    });
+
+    if (doesContactExists) {
+      alert(`${contact.name} is already in contact`);
+
+      return;
+    }
+
     this.setState({
       contacts: [...contacts, contact],
     });
@@ -26,6 +43,18 @@ export class App extends Component {
     this.setState({
       filter: event.target.value,
     });
+  };
+
+  deleteContact = (contact) => {
+    return () => {
+      const { contacts } = this.state;
+
+      this.setState({
+        contacts: contacts.filter(({ id }) => {
+          return contact.id !== id;
+        }),
+      });
+    };
   };
 
   render() {
@@ -50,7 +79,10 @@ export class App extends Component {
 
         <Filter filter={this.state.filter} updateFilter={this.updateFilter} />
 
-        <ContactList contacts={filteredContacts} />
+        <ContactList
+          contacts={filteredContacts}
+          deleteContact={this.deleteContact}
+        />
       </div>
     );
   }
