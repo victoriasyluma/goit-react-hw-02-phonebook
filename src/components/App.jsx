@@ -2,6 +2,7 @@ import { Component } from "react";
 import { ContactForm } from "./ContactForm/ContactForm";
 import { ContactList } from "./ContactList/ContactList";
 import { Filter } from "./Filter";
+import { nanoid } from "nanoid";
 
 export class App extends Component {
   state = {
@@ -17,10 +18,6 @@ export class App extends Component {
   addContact = (contact) => {
     const { contacts } = this.state;
 
-    if (!contact.name) {
-      return;
-    }
-
     const doesContactExists = contacts.some(({ name }) => {
       const nameSanitized = name.toLocaleLowerCase().trim();
       const newContactNameSanitized = contact.name.toLocaleLowerCase().trim();
@@ -34,9 +31,17 @@ export class App extends Component {
       return;
     }
 
-    this.setState({
-      contacts: [...contacts, contact],
-    });
+    const id = nanoid();
+
+    this.setState((state) => ({
+      contacts: [
+        ...state.contacts,
+        {
+          ...contact,
+          id,
+        },
+      ],
+    }));
   };
 
   updateFilter = (event) => {
@@ -45,15 +50,13 @@ export class App extends Component {
     });
   };
 
-  deleteContact = (contact) => {
+  deleteContact = (contactId) => {
     return () => {
-      const { contacts } = this.state;
-
-      this.setState({
+      this.setState(({ contacts }) => ({
         contacts: contacts.filter(({ id }) => {
-          return contact.id !== id;
+          return contactId !== id;
         }),
-      });
+      }));
     };
   };
 

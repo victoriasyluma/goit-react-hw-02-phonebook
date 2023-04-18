@@ -9,10 +9,10 @@ export class ContactList extends Component {
     return (
       <div className={styles.contact_list}>
         <ul>
-          {contacts.map((contact) => (
-            <li key={contact.id}>
-              {contact.name} {contact.number}
-              <button onClick={deleteContact(contact)}>Delete</button>
+          {contacts.map(({ id, name, number }) => (
+            <li key={id}>
+              {`${name}: ${number}`}
+              <button onClick={deleteContact(id)}>Delete</button>
             </li>
           ))}
         </ul>

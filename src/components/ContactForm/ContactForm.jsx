@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import { Component } from "react";
 import PropTypes from "prop-types";
 import styles from "./ContactForm.module.scss";
@@ -12,7 +11,6 @@ export class ContactForm extends Component {
   handleAddContact = (submitEvent) => {
     submitEvent.preventDefault();
 
-    const id = nanoid();
     const { name, number } = this.state;
 
     this.setState({
@@ -20,33 +18,26 @@ export class ContactForm extends Component {
       name: "",
     });
 
-    this.props.addContact({ id, name, number });
+    this.props.addContact({ name, number });
   };
 
-  whenContactFormChange = (key) => {
-    if (!["name", "number"].includes(key)) {
-      throw new Error(`Invalid key for the form: ${key}`);
-    }
+  whenContactFormChange = (event) => {
+    const { name, value } = event.target;
 
-    return (event) => {
-      this.setState({
-        [key]: event.target.value,
-      });
-    };
+    this.setState({
+      [name]: value,
+    });
   };
 
   render() {
     return (
-      <form
-        onSubmit={(event) => this.handleAddContact(event)}
-        className={styles.form}
-      >
+      <form onSubmit={this.handleAddContact} className={styles.form}>
         <h1>Phonebook</h1>
         <label>
           Name:
           <input
             value={this.state.name}
-            onChange={this.whenContactFormChange("name")}
+            onChange={this.whenContactFormChange}
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -59,7 +50,7 @@ export class ContactForm extends Component {
           Number:
           <input
             value={this.state.number}
-            onChange={this.whenContactFormChange("number")}
+            onChange={this.whenContactFormChange}
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
