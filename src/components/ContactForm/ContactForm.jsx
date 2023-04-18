@@ -25,7 +25,7 @@ export class ContactForm extends Component {
 
   whenContactFormChange = (key) => {
     if (!["name", "number"].includes(key)) {
-      throw `Wrong key for the form, key: ${key}`;
+      throw new Error(`Invalid key for the form: ${key}`);
     }
 
     return (event) => {
