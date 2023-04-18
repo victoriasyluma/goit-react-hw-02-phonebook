@@ -1,5 +1,5 @@
-import { nanoid } from "nanoid";
 import { Component } from "react";
+import styles from "./ContactList.module.scss";
 import PropTypes from "prop-types";
 
 export class ContactList extends Component {
@@ -7,7 +7,7 @@ export class ContactList extends Component {
     const { contacts, deleteContact } = this.props;
 
     return (
-      <div>
+      <div className={styles.contact_list}>
         <ul>
           {contacts.map((contact) => (
             <li key={contact.id}>
@@ -22,3 +22,14 @@ export class ContactList extends Component {
 }
 
 export default ContactList;
+
+ContactList.propTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  deleteContact: PropTypes.func.isRequired,
+};

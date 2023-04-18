@@ -9,8 +9,8 @@ export class ContactForm extends Component {
     number: "",
   };
 
-  handleAddContact = (clickEvent) => {
-    clickEvent.preventDefault();
+  handleAddContact = (submitEvent) => {
+    submitEvent.preventDefault();
 
     const id = nanoid();
     const { name, number } = this.state;
@@ -37,7 +37,11 @@ export class ContactForm extends Component {
 
   render() {
     return (
-      <form className={styles.form}>
+      <form
+        onSubmit={(event) => this.handleAddContact(event)}
+        className={styles.form}
+      >
+        <h1>Phonebook</h1>
         <label>
           Name:
           <input
@@ -64,12 +68,14 @@ export class ContactForm extends Component {
           />
         </label>
 
-        <button onClick={(event) => this.handleAddContact(event)} type="button">
-          Add Contact
-        </button>
+        <button type="submit">Add Contact</button>
       </form>
     );
   }
 }
 
 export default ContactForm;
+
+ContactForm.propTypes = {
+  addContact: PropTypes.func.isRequired,
+};
